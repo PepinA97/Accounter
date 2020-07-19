@@ -1,0 +1,35 @@
+﻿<Window x:Class="WpfApp1.Windows.ItemClassDetails.View"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Item details" ResizeMode="CanMinimize" SizeToContent="Height" Width="128" WindowStartupLocation="CenterScreen">
+    <StackPanel DataContext="{Binding Path=DbClass}">
+        <TextBlock>Name</TextBlock>
+        <TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+        <TextBlock>Quantity</TextBlock>
+        <TextBox Text="{Binding Path=BulkQuantity, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+        <CheckBox x:Name="StartingAmountCheckBox" IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.StartingAmountIsChecked}"></CheckBox>
+        <TextBlock>Starting Amount</TextBlock>
+        <TextBox Text="{Binding Path=StartingAmount}" IsEnabled="{Binding ElementName=StartingAmountCheckBox, Path=IsChecked}"></TextBox>
+
+        <CheckBox x:Name="NutritionCheckBox" IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.NutritionIsChecked}"></CheckBox>
+        <StackPanel DataContext="{Binding Path=Nutrition}" IsEnabled="{Binding ElementName=NutritionCheckBox, Path=IsChecked}">
+            <TextBlock>Calories</TextBlock>
+            <TextBox Text="{Binding Path=Calories}" IsEnabled="{Binding ElementName=NutritionCheckBox, Path=IsChecked}"></TextBox>
+
+            <CheckBox x:Name="ComplexNutritionCheckBox" IsChecked="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.ComplexNutritionIsChecked}"></CheckBox>
+            <TextBlock>Protein</TextBlock>
+            <TextBox Text="{Binding Path=Protein}" IsEnabled="{Binding ElementName=ComplexNutritionCheckBox, Path=IsChecked}"></TextBox>
+            <TextBlock>Fat</TextBlock>
+            <TextBox Text="{Binding Path=Fat}" IsEnabled="{Binding ElementName=ComplexNutritionCheckBox, Path=IsChecked}"></TextBox>
+            <TextBlock>Carbohydrates</TextBlock>
+            <TextBox Text="{Binding Path=Carbohydrates}" IsEnabled="{Binding ElementName=ComplexNutritionCheckBox, Path=IsChecked}"></TextBox>
+        </StackPanel>
+
+        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Finish}">Finish</Button>
+    </StackPanel>
+</Window>
