@@ -6,3 +6,5 @@ bin/
 .vs/
 *.csproj
 Repo.csproj
+Repo.csproj
+*.csproj
