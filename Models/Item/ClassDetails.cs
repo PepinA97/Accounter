@@ -14,7 +14,7 @@ namespace WpfApp1.Models.Item
 
         public ClassDetails()
         {
-
+            Nutrition = new Nutrition();
         }
 
         public bool HasAmount

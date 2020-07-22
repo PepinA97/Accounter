@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1.Windows.Main"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="450">
     <Window.Resources>
+        <local:ItemClassConverter x:Key="ItemClassConverter"/>
+        
         <DataTemplate x:Key="ClassItemListEntry">
             <StackPanel>
                 <TextBlock Text="{Binding Path=Name}"></TextBlock>
@@ -30,24 +33,18 @@
         </DataTemplate>
         
         <DataTemplate x:Key="InstanceItemListEntry">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="{Binding Path=Name}"></TextBlock>
-                <TextBox x:Name="AmountBox" MaxLines="1" MaxLength="3"></TextBox>
-                <Button Grid.Column="1" Content="Commit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CommitItemInstance}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=Name}" Margin="0,0,60,0"></TextBlock>
+                <TextBox Grid.Column="1" x:Name="AmountBox" MaxLines="1" MaxLength="3" HorizontalAlignment="Right"></TextBox>
+                <Button Grid.Column="2" Content="Commit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CommitItemInstance}" HorizontalAlignment="Right">
                     <Button.CommandParameter>
-                        <MultiBinding>
+                        <MultiBinding Converter="{StaticResource ItemClassConverter}">
                             <Binding></Binding>
-                            <Binding></Binding>
+                            <Binding ElementName="AmountBox"></Binding>
                         </MultiBinding>
                     </Button.CommandParameter>
                 </Button>
-            </Grid>
+            </StackPanel>
 
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=HasAmount}" Value="false">
@@ -58,8 +55,8 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <Grid>

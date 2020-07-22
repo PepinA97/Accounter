@@ -27,7 +27,9 @@ namespace WpfApp1.Windows.Main.Commands
 
         public void Execute(object parameter)
         {
-            Models.Item.DbInstance dbInstance = parameter as Models.Item.DbInstance;
+            var parameters = (object[])parameter;
+
+            Models.Item.DbInstance dbInstance = parameters[0] as Models.Item.DbInstance;
 
             using var db = new DatabaseContext();
 
