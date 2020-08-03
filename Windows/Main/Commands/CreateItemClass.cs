@@ -26,7 +26,7 @@ namespace WpfApp1.Windows.Main.Commands
 
         public void Execute(object parameter)
         {
-            DbClass dbClass = new DbClass();
+            DbClass dbClass = new DbClass("(unnamed)");
 
             using var db = new DatabaseContext();
 

@@ -5,38 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1.Windows.Main"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="450">
+        Title="Accounter" Height="800" Width="450" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:ItemClassConverter x:Key="ItemClassConverter"/>
         
         <DataTemplate x:Key="ClassItemListEntry">
             <StackPanel>
-                <TextBlock Text="{Binding Path=Name}"></TextBlock>
-                <TextBlock Text="{Binding Path=BulkQuantity}"></TextBlock>
-                <TextBlock x:Name="StartingAmountBox" Text="{Binding Path=StartingAmount}"></TextBlock>
-
-                <StackPanel x:Name="NutritionStackPanel" DataContext="{Binding Path=Nutrition}">
-                    <TextBlock Text="{Binding Path=Calories}"></TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Path=BulkQuantity}" ></TextBlock>
+                    <TextBlock Text="x "></TextBlock>
+                    <TextBlock Text="{Binding Path=Name}"></TextBlock>
                 </StackPanel>
+
+                <StackPanel x:Name="StartingAmountStack" Orientation="Horizontal">
+                    <TextBlock Text="{Binding Path=StartingAmount}"></TextBlock>
+                    <TextBlock Text=" grams"></TextBlock>
+                </StackPanel>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="12"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="1" x:Name="NutritionStack" DataContext="{Binding Path=Nutrition}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Calories: "></TextBlock>
+                            <TextBlock Text="{Binding Path=Calories}"></TextBlock>
+                        </StackPanel>
+
+                        <StackPanel x:Name="ComplexNutritionStack">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Protein: "></TextBlock>
+                                <TextBlock Text="{Binding Path=Protein}"> protein</TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Fat: "></TextBlock>
+                                <TextBlock Text="{Binding Path=Fat}"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Carbohydrates: "></TextBlock>
+                                <TextBlock Text="{Binding Path=Carbohydrates}"></TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
 
                 <Button Content="Add" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.AddItemInstance}" CommandParameter="{Binding}"></Button>
             </StackPanel>
 
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=HasAmount}" Value="false">
-                    <Setter TargetName="StartingAmountBox" Property="Visibility" Value="Collapsed"></Setter>
+                    <Setter TargetName="StartingAmountStack" Property="Visibility" Value="Collapsed"></Setter>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Path=Nutrition.HasValues}" Value="false">
-                    <Setter TargetName="NutritionStackPanel" Property="Visibility" Value="Collapsed"></Setter>
+                <DataTrigger Binding="{Binding Path=Nutrition.Calories}" Value="{x:Null}">
+                    <Setter TargetName="NutritionStack" Property="Visibility" Value="Collapsed"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Nutrition.HasComplexValues}" Value="false">
+                    <Setter TargetName="ComplexNutritionStack" Property="Visibility" Value="Collapsed"></Setter>
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
         
         <DataTemplate x:Key="InstanceItemListEntry">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Path=Name}" Margin="0,0,60,0"></TextBlock>
-                <TextBox Grid.Column="1" x:Name="AmountBox" MaxLines="1" MaxLength="3" HorizontalAlignment="Right"></TextBox>
-                <Button Grid.Column="2" Content="Commit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CommitItemInstance}" HorizontalAlignment="Right">
+                <TextBlock Text="{Binding Path=Name}"></TextBlock>
+                <TextBox x:Name="AmountBox" HorizontalAlignment="Right"></TextBox>
+                <Button Content="Commit" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.CommitItemInstance}" HorizontalAlignment="Right">
                     <Button.CommandParameter>
                         <MultiBinding Converter="{StaticResource ItemClassConverter}">
                             <Binding></Binding>
@@ -70,10 +105,16 @@
 
             <ListBox x:Name="listBox" Grid.Row="1" ItemsSource="{Binding Path=ItemClasses}" SelectedItem="{Binding Path=SelectedItemClass}" ItemTemplate="{StaticResource ClassItemListEntry}"></ListBox>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Button Content="Create" Command="{Binding Path=CreateItemClass}"></Button>
-                <Button Content="Edit" Command="{Binding Path=EditItemClass}" CommandParameter="{Binding Path=SelectedItem, ElementName=listBox}"></Button>
-                <Button Content="Delete" Command="{Binding Path=DeleteItemClass}" CommandParameter="{Binding Path=SelectedItem, ElementName=listBox}"></Button>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Command="{Binding Path=DeleteItemClass}" CommandParameter="{Binding Path=SelectedItem, ElementName=listBox}">
+                    <Image Source="/Windows/Main/Remove_16x.png"></Image>
+                </Button>
+                <Button Command="{Binding Path=EditItemClass}" CommandParameter="{Binding Path=SelectedItem, ElementName=listBox}">
+                    <Image Source="/Windows/Main/Edit_16x.png"></Image>
+                </Button>
+                <Button Command="{Binding Path=CreateItemClass}">
+                    <Image Source="/Windows/Main/Add_16x.png"></Image>
+                </Button>
             </StackPanel>
         </Grid>
         

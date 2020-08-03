@@ -12,5 +12,12 @@ namespace WpfApp1.Models.Item
         {
 
         }
+
+        public DbClass(string name)
+        {
+            Name = name;
+
+            BulkQuantity = 1; // Is overwritten by EF setters
+        }
     }
 }

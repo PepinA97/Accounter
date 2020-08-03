@@ -1,11 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GalaSoft.MvvmLight;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Dynamic;
+using System.Runtime.CompilerServices;
 
 namespace WpfApp1.Models.Item
 {
-    abstract class ClassDetails
+    abstract class ClassDetails : INotifyPropertyChanged
     {
+        #region On Property Changed
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        #endregion
+
         public string Name { get; set; }
 
         public int? StartingAmount { get; set; }
@@ -26,9 +38,9 @@ namespace WpfApp1.Models.Item
         }
     }
 
-    class Nutrition
+    class Nutrition : ObservableObject
     {
-        public int Calories { get; set; }
+        public int? Calories { get; set; }
 
         public int? Protein { get; set; }
         public int? Fat { get; set; }
@@ -36,7 +48,7 @@ namespace WpfApp1.Models.Item
 
         public Nutrition()
         {
-            Calories = 0;
+
         }
 
         public bool HasComplexValues

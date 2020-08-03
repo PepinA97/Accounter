@@ -8,3 +8,5 @@ bin/
 Repo.csproj
 Repo.csproj
 *.csproj
+Properties/
+Repo.csproj

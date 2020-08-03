@@ -35,6 +35,8 @@ namespace WpfApp1.Windows.Main.Commands
             {
                 using var db = new DatabaseContext();
 
+                dbClass = viewModel.GetDbClass();
+
                 db.DbClasses.Attach(dbClass);
 
                 if(dbClass.ID == 0)
